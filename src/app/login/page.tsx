@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -25,7 +25,6 @@ export default function LoginPage() {
 
     try {
       setIsSubmitting(true);
-      // Format phone logic: ensure +234
       let formattedPhone = phone.trim();
       if (!formattedPhone.startsWith("+234") && formattedPhone.startsWith("0")) {
         formattedPhone = "+234" + formattedPhone.substring(1);
@@ -52,31 +51,50 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col justify-center py-12 px-6 lg:px-8 font-sans">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link href="/" className="text-3xl font-extrabold tracking-tight text-stone-900 inline-block mb-8 hover:opacity-80 transition-opacity">
-          Queue<span className="text-brand-500">Less</span>
-        </Link>
-        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-stone-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-stone-600">
-          Or{" "}
-          <Link href="/register" className="font-semibold text-brand-500 hover:text-brand-600">
-            register for a new account
+    <div className="flex min-h-screen bg-white font-sans">
+      {/* Left Pane - Visual */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-stone-900 overflow-hidden items-center justify-center">
+        {/* Animated gradient blob */}
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-brand-500 rounded-full blur-[120px] opacity-20 animate-pulse-slow"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-500 rounded-full blur-[150px] opacity-20"></div>
+        
+        <div className="relative z-10 max-w-lg px-12 text-center text-balance animate-fade-in-up">
+          <Link href="/" className="inline-block text-4xl font-extrabold tracking-tight text-white mb-8 hover:scale-105 transition-transform">
+            Queue<span className="text-brand-400">Less</span>
           </Link>
-        </p>
+          <h2 className="text-4xl font-extrabold text-white mb-6 leading-tight">
+            Stop waiting in line. <br />
+            <span className="text-brand-400">Start living your life.</span>
+          </h2>
+          <p className="text-lg text-stone-300">
+            Join queues remotely, track your position live, and drop the anxiety of losing your spot.
+          </p>
+        </div>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white px-6 py-12 shadow-sm border border-stone-200 sm:rounded-xl sm:px-12">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+      {/* Right Pane - Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 xl:p-24 animate-fade-in">
+        <div className="w-full max-w-sm">
+          <div className="lg:hidden mb-12 text-center">
+            <Link href="/" className="text-3xl font-extrabold tracking-tight text-stone-900 inline-block">
+              Queue<span className="text-brand-500">Less</span>
+            </Link>
+          </div>
+
+          <div className="mb-10 text-center lg:text-left">
+            <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight">Welcome back</h1>
+            <p className="text-stone-500 mt-2 font-medium text-sm">
+              Please enter your details to sign in.
+            </p>
+          </div>
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium leading-6 text-stone-900">
+              <label htmlFor="phone" className="block text-sm font-semibold text-stone-900 mb-1.5 ml-1">
                 Phone Number
               </label>
-              <div className="mt-2 relative flex rounded-lg shadow-sm">
-                <span className="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-stone-300 bg-stone-50 text-stone-500 sm:text-sm font-semibold">
+              <div className="relative flex shadow-sm rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-brand-500 focus-within:border-brand-500 transition-all">
+                <span className="inline-flex items-center justify-center px-4 bg-stone-100 border border-r-0 border-stone-200 text-stone-500 font-semibold text-sm">
                   +234
                 </span>
                 <input
@@ -87,46 +105,68 @@ export default function LoginPage() {
                   placeholder="8012345678"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="block w-full min-w-0 flex-1 rounded-none rounded-r-lg border-0 py-2.5 text-stone-900 ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-brand-500 sm:text-sm sm:leading-6 pl-4 h-[44px]"
+                  className="block w-full border-y border-r border-stone-200 py-3.5 px-4 text-stone-900 outline-none placeholder:text-stone-400 sm:text-sm font-medium transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-stone-900">
-                Password
-              </label>
-              <div className="mt-2 relative">
+              <div className="flex justify-between items-center mb-1.5 ml-1">
+                <label htmlFor="password" className="block text-sm font-semibold text-stone-900">
+                  Password
+                </label>
+                <a href="#" className="text-xs font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative rounded-xl shadow-sm overflow-hidden">
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-lg border-0 py-2.5 text-stone-900 shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-brand-500 sm:text-sm sm:leading-6 px-4 pr-12 h-[44px]"
+                  className="block w-full border border-stone-200 py-3.5 pl-4 pr-12 text-stone-900 outline-none placeholder:text-stone-400 sm:text-sm font-medium focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-400 hover:text-stone-600 focus:outline-none"
+                  className="absolute inset-y-0 right-0 flex items-center pr-4 text-stone-400 hover:text-stone-600 transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
             </div>
 
-            <div>
+            <div className="pt-4">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex w-full justify-center rounded-lg bg-brand-500 px-6 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-colors disabled:opacity-70 disabled:cursor-not-allowed items-center gap-2 h-[44px]"
+                className="group relative flex w-full justify-center items-center py-4 px-4 text-sm font-bold text-white bg-brand-500 hover:bg-brand-600 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-brand-500/30 active:scale-[0.98] overflow-hidden"
               >
-                {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                Log In
+                <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></div>
+                <span className="relative flex items-center gap-2">
+                  {isSubmitting ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </span>
               </button>
             </div>
           </form>
+
+          <p className="mt-10 text-center text-sm text-stone-500 font-medium">
+            Don't have an account?{" "}
+            <Link href="/register" className="font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

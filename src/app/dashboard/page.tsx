@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOut, MapPin, User as UserIcon, Loader2, ArrowRight } from "lucide-react";
+import { LogOut, MapPin, Loader2, ArrowRight, Building2, Ticket } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 import api from "@/lib/api";
@@ -80,23 +80,25 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans pb-20">
-      {/* Header */}
-      <header className="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-tight text-stone-900">Dashboard</h1>
+      {/* Premium Glass Header */}
+      <header className="sticky top-0 z-40 glass-panel border-b border-stone-200/50 shadow-sm transition-all animate-fade-in-up">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link href="/dashboard" className="text-xl font-black tracking-tight text-stone-900 group">
+            Queue<span className="text-brand-500">Less</span>
+          </Link>
           
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-semibold text-sm">
+          <div className="flex items-center gap-5">
+            <div className="flex items-center gap-3 bg-white border border-stone-200 px-3 py-1.5 rounded-full shadow-sm">
+              <div className="w-7 h-7 rounded-full bg-stone-900 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white">
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
-              <span className="text-sm font-medium text-stone-700 hidden sm:block">
+              <span className="text-sm font-bold text-stone-800 hidden sm:block pr-2">
                 {user?.firstName}
               </span>
             </div>
             <button
               onClick={logout}
-              className="p-2 text-stone-400 hover:text-red-500 transition-colors rounded-lg hover:bg-stone-100"
+              className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 transition-colors rounded-xl font-bold flex items-center gap-2"
               title="Logout"
             >
               <LogOut className="w-5 h-5" />
@@ -105,74 +107,85 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 animate-fade-in">
         
         {loadingData ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
+          <div className="flex justify-center items-center py-32">
+            <Loader2 className="w-10 h-10 animate-spin text-brand-500 drop-shadow-md" />
           </div>
         ) : (
           <>
-            {/* Active Queues Card */}
+            <div className="mb-10">
+              <h2 className="text-3xl font-black text-stone-900 tracking-tight">Overview</h2>
+              <p className="text-stone-500 font-medium mt-1">Manage your active spots and browse new queues.</p>
+            </div>
+
+            {/* Premium Active Queues Cards */}
             {activeEntries.length > 0 && (
-              <section className="mb-10">
-                <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-4">Active Queues</h2>
+              <section className="mb-14">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-2 h-6 bg-brand-500 rounded-full"></div>
+                  <h3 className="text-lg font-black text-stone-900 uppercase tracking-widest">Active Tickets</h3>
+                </div>
                 
-                <div className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-6">
                   {activeEntries.map((entry) => {
-                    const totalWaiting = (entry.queue as any).totalWaiting || entry.position; // fallback estimate
+                    const totalWaiting = (entry.queue as any).totalWaiting || entry.position;
                     return (
                       <div 
                         key={entry.id}
                         onClick={() => router.push(`/queue/${entry.id}`)}
-                        className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 cursor-pointer hover:border-brand-200 transition-all hover:shadow-md active:scale-[0.99]"
+                        className="bg-white border border-stone-200 rounded-[2rem] shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-brand-200 transition-all duration-300 cursor-pointer overflow-hidden group"
                       >
-                        <div className="flex justify-between items-start mb-6">
-                          <div>
-                            <h3 className="font-bold text-lg text-stone-900 leading-tight">
-                              {entry.queue.institution.name}
-                            </h3>
-                            <p className="text-stone-500 font-medium">
-                              {entry.queue.service.name}
-                            </p>
+                        <div className="p-6 relative">
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          
+                          <div className="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                              <span className="inline-block px-2.5 py-1 bg-stone-100 text-stone-600 text-xs font-bold rounded-md mb-3 uppercase tracking-wider">{entry.queue.service.name}</span>
+                              <h3 className="font-black text-2xl text-stone-900 leading-tight mb-1">
+                                {entry.queue.institution.name}
+                              </h3>
+                            </div>
+                            <div className="bg-brand-500 border-none rounded-2xl px-5 py-3 flex flex-col items-center shadow-lg shadow-brand-500/20 transform group-hover:scale-105 transition-transform">
+                              <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest mb-0.5">Ticket</span>
+                              <span className="text-3xl font-black text-white tabular-nums leading-none">
+                                #{entry.ticketNumber}
+                              </span>
+                            </div>
                           </div>
-                          <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-2 flex flex-col items-center min-w-[80px]">
-                            <span className="text-xs font-bold text-brand-700 uppercase tracking-wide">Ticket</span>
-                            <span className="text-2xl font-extrabold text-brand-600 tabular-nums leading-none mt-1">
-                              #{entry.ticketNumber}
-                            </span>
+
+                          <div className="grid grid-cols-2 gap-4 mb-6 relative z-10">
+                            <div className="bg-stone-50 rounded-xl p-4 border border-stone-100">
+                              <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest mb-1">Your Position</p>
+                              <p className="text-2xl font-black text-stone-900">
+                                <span className="text-brand-500">#{entry.position}</span>
+                              </p>
+                            </div>
+                            <div className="bg-stone-50 rounded-xl p-4 border border-stone-100">
+                              <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest mb-1">Est. Wait</p>
+                              <p className="text-2xl font-black text-stone-900">
+                                ~{entry.estimatedWaitMinutes} <span className="text-sm font-semibold text-stone-500">min</span>
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="mb-6 relative z-10">
+                            <ProgressBar position={entry.position} total={totalWaiting} />
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4 mb-6 p-4 rounded-xl bg-stone-50 border border-stone-100">
-                          <div>
-                            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Position</p>
-                            <p className="text-xl font-bold text-stone-900">
-                              <span className="text-brand-500">#{entry.position}</span> in line
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Est. Wait</p>
-                            <p className="text-xl font-bold text-stone-900">
-                              ~{entry.estimatedWaitMinutes} <span className="text-base font-medium text-stone-500">min</span>
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="mb-6">
-                          <ProgressBar position={entry.position} total={totalWaiting} />
-                        </div>
-
-                        <div className="flex gap-3">
+                        <div className="flex border-t border-stone-100 bg-stone-50/50">
                           <button
                             onClick={(e) => { e.stopPropagation(); router.push(`/queue/${entry.id}`); }}
-                            className="flex-1 bg-brand-500 text-white rounded-lg py-3 font-semibold hover:bg-brand-600 transition-colors text-sm"
+                            className="flex-1 py-4 font-bold text-brand-600 hover:bg-brand-50 transition-colors text-sm flex items-center justify-center gap-2"
                           >
-                            View Live Tracking
+                            <Ticket className="w-4 h-4" /> Live Tracking
                           </button>
+                          <div className="w-px bg-stone-200"></div>
                           <button
                             onClick={(e) => handleCancelEntry(e, entry.id)}
-                            className="px-5 text-sm font-semibold rounded-lg bg-white border-2 border-red-100 text-red-600 hover:bg-red-50 hover:border-red-200 transition-colors"
+                            className="px-6 py-4 font-bold text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors text-sm"
                           >
                             Cancel
                           </button>
@@ -185,39 +198,49 @@ export default function DashboardPage() {
             )}
 
             {/* Institutions Browse */}
-            <section>
-              <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-4">Browse Institutions</h2>
+            <section className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-2 h-6 bg-stone-400 rounded-full"></div>
+                <h3 className="text-lg font-black text-stone-900 uppercase tracking-widest">Available Institutions</h3>
+              </div>
               
               {institutions.length === 0 ? (
-                <div className="bg-white border flex flex-col items-center justify-center border-stone-200 rounded-2xl p-8 text-center border-dashed">
-                  <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-400 mb-4">
-                    <MapPin className="w-6 h-6" />
+                <div className="bg-white border-2 border-stone-200/50 rounded-[2rem] p-12 text-center border-dashed">
+                  <div className="w-16 h-16 bg-stone-100 rounded-2xl flex items-center justify-center text-stone-400 mx-auto mb-6">
+                    <Building2 className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-stone-900 mb-1">No institutions found</h3>
-                  <p className="text-stone-500 text-sm">Check back later or try a different location.</p>
+                  <h3 className="text-xl font-black text-stone-900 mb-2">No institutions listed</h3>
+                  <p className="text-stone-500 font-medium">Check back later or try a different location.</p>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {institutions.map((inst) => (
                     <Link href={`/institutions/${inst.id}`} key={inst.id}>
-                      <div className="bg-white border border-stone-200 rounded-xl p-5 hover:border-brand-200 hover:shadow-sm transition-all flex items-start gap-4 group">
-                        <div className="w-12 h-12 rounded-lg bg-stone-50 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-50 group-hover:text-brand-600 transition-colors text-stone-500 border border-stone-100">
-                          <InstitutionIcon type={inst.type} className="w-6 h-6" />
+                      <div className="bg-white border border-stone-200 rounded-2xl p-5 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-300 flex items-start flex-col gap-4 group h-full">
+                        <div className="flex items-start justify-between w-full">
+                          <div className="w-12 h-12 rounded-xl bg-stone-50 flex items-center justify-center group-hover:bg-brand-50 transition-colors text-stone-400 group-hover:text-brand-500 border border-stone-100">
+                            <InstitutionIcon type={inst.type} className="w-6 h-6" />
+                          </div>
+                          <div className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all bg-brand-50 p-2 rounded-full text-brand-500">
+                            <ArrowRight className="w-4 h-4" />
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-stone-900 truncate">{inst.name}</h3>
-                          <div className="flex items-center gap-1 text-sm text-stone-500 mt-1">
-                            <MapPin className="w-3.5 h-3.5" />
+                        
+                        <div className="w-full mt-2">
+                          <h3 className="font-black text-lg text-stone-900 leading-tight mb-2 line-clamp-1 group-hover:text-brand-600 transition-colors">{inst.name}</h3>
+                          <div className="flex items-center gap-1.5 text-sm font-semibold text-stone-500 mb-4">
+                            <MapPin className="w-4 h-4 text-stone-400" />
                             <span className="truncate">{inst.address}, {inst.city}</span>
                           </div>
-                          <div className="mt-3 flex items-center gap-2">
-                            <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-stone-100 text-stone-600">
+                          
+                          <div className="flex items-center justify-between mt-auto">
+                            <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-stone-100 text-stone-600">
                               {inst.services.length} Services
                             </span>
+                            <span className="text-xs font-bold text-brand-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                              View Details
+                            </span>
                           </div>
-                        </div>
-                        <div className="self-center opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all">
-                          <ArrowRight className="w-5 h-5 text-brand-500" />
                         </div>
                       </div>
                     </Link>
