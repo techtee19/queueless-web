@@ -124,9 +124,9 @@ export default function StaffDashboardPage() {
   // Get currently serving (there should only be 1 per staff member, but let's find it)
   // The API should ideally return the specific entry this staff member is serving.
   // Assuming the `queues` array contains entries and we filter for SERVING.
-  const allEntries = queues.flatMap(q => q.entries || []);
-  const currentlyServing = allEntries.find(e => e.status === "SERVING" && e.servedById === user?.id) 
-    || allEntries.find(e => e.status === "SERVING"); // Fallback if API doesn't populate servedById well
+  const allEntries = queues.flatMap(q => (q.entries || []).map((e: any) => ({ ...e, queue: q })));
+  const currentlyServing = allEntries.find(e => (e.status === "SERVING" || e.status === "CALLED") && e.servedById === user?.id) 
+    || allEntries.find(e => e.status === "SERVING" || e.status === "CALLED");
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans pb-24">
@@ -275,7 +275,7 @@ export default function StaffDashboardPage() {
               </div>
             ) : (
               queues.map((queue) => {
-                const waitingList = queue.entries.filter((e: any) => ["WAITING", "CALLED", "CHECKED_IN"].includes(e.status));
+                const waitingList = queue.entries.filter((e: any) => ["WAITING", "CHECKED_IN"].includes(e.status));
                 const isNextAvailable = waitingList.length > 0 && !currentlyServing;
                 
                 return (
