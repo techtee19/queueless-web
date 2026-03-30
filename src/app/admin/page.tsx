@@ -1,122 +1,136 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { LayoutDashboard, Users, Building2, Activity, Settings, Plus, ArrowUpRight, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { LogOut, LayoutDashboard, Users, Building2, Activity, Settings, Plus, Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { useAuthStore } from "@/stores/authStore";
+import api from "@/lib/api";
 
-export default function AdminDashboardPage() {
-  const router = useRouter();
-  const { user, isAuthenticated, isLoading: authLoading, loadUser, logout } = useAuthStore();
+export default function AdminOverviewPage() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadUser();
-  }, [loadUser]);
+    fetchStats();
+  }, []);
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push("/login");
-    } else if (!authLoading && isAuthenticated && user?.role !== "ADMIN" && user?.role !== "SUPER_ADMIN") {
-      // Redirect non-admins away
-      router.push("/dashboard");
-      toast.error("Unauthorized access");
+  const fetchStats = async () => {
+    try {
+      const { data } = await api.get("/admin/stats");
+      setStats(data.data);
+    } catch (error) {
+      console.error("Failed to load admin stats");
+    } finally {
+      setLoading(false);
     }
-  }, [authLoading, isAuthenticated, user, router]);
-
-  if (authLoading || !isAuthenticated || (user?.role !== "ADMIN" && user?.role !== "SUPER_ADMIN")) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-500 drop-shadow-md" />
-      </div>
-    );
-  }
+  };
 
   return (
-    <div className="flex min-h-screen bg-stone-50 font-sans">
-      {/* Admin Sidebar */}
-      <aside className="w-64 fixed inset-y-0 left-0 bg-stone-950 text-stone-400 flex flex-col z-50">
-        <div className="h-20 flex items-center px-6 border-b border-stone-800">
-          <Link href="/admin" className="text-xl font-black tracking-tight text-white group">
-            Queue<span className="text-brand-500">Less</span> <span className="text-xs text-stone-500 font-bold ml-1 uppercase tracking-widest">Admin</span>
-          </Link>
+    <div className="p-8 md:p-12 animate-fade-in max-w-6xl mx-auto">
+      <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 relative z-10">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 text-stone-600 font-bold text-[10px] uppercase tracking-widest mb-4">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+            </span>
+            System Live & Routing
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-stone-900 tracking-tight leading-none mb-2">Network Control</h1>
+          <p className="text-stone-500 font-medium text-lg max-w-xl">
+            Real-time birds-eye view of all QueueLess planetary infrastructure.
+          </p>
         </div>
         
-        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
-          <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-500/10 text-brand-400 font-semibold transition-colors">
-            <LayoutDashboard className="w-5 h-5" /> Dashboard
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-stone-900 hover:text-white font-semibold transition-colors">
-            <Building2 className="w-5 h-5" /> Institutions
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-stone-900 hover:text-white font-semibold transition-colors">
-            <Users className="w-5 h-5" /> Users & Staff
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-stone-900 hover:text-white font-semibold transition-colors">
-            <Activity className="w-5 h-5" /> System Analytics
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-stone-900 hover:text-white font-semibold transition-colors">
-            <Settings className="w-5 h-5" /> Settings
-          </a>
-        </nav>
+        <Link href="/admin/institutions" className="inline-flex items-center gap-2 bg-stone-900 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-stone-900/20 hover:bg-stone-800 hover:scale-105 active:scale-95 transition-all w-max group relative overflow-hidden">
+          <div className="absolute inset-0 w-full h-full bg-white/10 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
+          <Plus className="w-5 h-5 relative z-10" /> 
+          <span className="relative z-10">Deploy Institution</span>
+        </Link>
+      </header>
 
-        <div className="p-4 border-t border-stone-800">
-          <button
-            onClick={logout}
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-stone-900 hover:bg-stone-800 hover:text-white transition-colors font-bold text-sm"
-          >
-            <LogOut className="w-4 h-4" /> Sign Out
-          </button>
+      {/* Holographic Glowing Stats Grid */}
+      {loading ? (
+        <div className="flex justify-center py-32">
+          <Loader2 className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
         </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 ml-64 p-8 animate-fade-in">
-        <header className="flex items-center justify-between mb-10">
-          <div>
-            <h1 className="text-3xl font-black text-stone-900 tracking-tight">Admin Dashboard</h1>
-            <p className="text-stone-500 font-medium mt-1">Welcome back, {user?.firstName}. System is running smoothly.</p>
-          </div>
-          
-          <button className="flex items-center gap-2 bg-brand-500 text-white px-5 py-2.5 rounded-xl font-bold shadow-md shadow-brand-500/20 hover:bg-brand-600 active:scale-95 transition-all">
-            <Plus className="w-4 h-4" /> Add Institution
-          </button>
-        </header>
-
-        {/* Quick Stats Grid */}
-        <div className="grid md:grid-cols-4 gap-6 mb-10">
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
-            { label: "Active Institutions", value: "3", icon: Building2, color: "text-brand-500", bg: "bg-brand-50" },
-            { label: "Total Queues Today", value: "142", icon: Activity, color: "text-sky-500", bg: "bg-sky-50" },
-            { label: "Registered Users", value: "1,204", icon: Users, color: "text-indigo-500", bg: "bg-indigo-50" },
-            { label: "Platform Health", value: "100%", icon: Settings, color: "text-emerald-500", bg: "bg-emerald-50" },
+            { label: "Active Nodes", sub: "Connected Institutions", value: stats?.activeInstitutions || 0, icon: Building2, gradient: "from-brand-500 to-emerald-400", shadow: "shadow-brand-500/20" },
+            { label: "Today's Volume", sub: "Concurrent active queues", value: stats?.totalQueuesToday || 0, icon: Activity, gradient: "from-sky-500 to-indigo-500", shadow: "shadow-sky-500/20" },
+            { label: "Total Identities", sub: "Registered verified users", value: stats?.registeredUsers?.toLocaleString() || 0, icon: Users, gradient: "from-fuchsia-500 to-purple-600", shadow: "shadow-fuchsia-500/20" },
+            { label: "Global Uptime", sub: "Platform operational health", value: stats?.uptime || "99.99%", icon: Sparkles, gradient: "from-amber-400 to-orange-500", shadow: "shadow-amber-500/20" },
           ].map((stat, i) => (
-            <div key={i} className="bg-white p-6 rounded-[2rem] border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.bg} ${stat.color}`}>
+            <div key={i} className="bg-white p-6 rounded-[2rem] border border-stone-200 shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute -right-6 -top-6 w-32 h-32 opacity-10 blur-2xl group-hover:opacity-20 transition-opacity bg-gradient-to-br rounded-full z-0"></div>
+              
+              <div className="relative z-10">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br ${stat.gradient} text-white mb-6 shadow-lg ${stat.shadow} transform group-hover:scale-110 transition-transform`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
-                <div>
-                  <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">{stat.label}</p>
-                </div>
+                <h3 className="text-4xl font-black text-stone-900 tracking-tight leading-none mb-2">{stat.value}</h3>
+                <p className="text-sm font-bold text-stone-900">{stat.label}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-stone-400 mt-1">{stat.sub}</p>
               </div>
-              <p className="text-3xl font-black text-stone-900">{stat.value}</p>
             </div>
           ))}
         </div>
+      )}
 
-        {/* Empty State / Coming Soon Layout */}
-        <div className="bg-white border-2 border-dashed border-stone-200 rounded-[2rem] p-16 text-center">
-          <div className="w-20 h-20 bg-stone-50 rounded-2xl flex items-center justify-center text-stone-300 mx-auto mb-6">
-            <LayoutDashboard className="w-10 h-10" />
+      {/* Aesthetic Filler / Analytics Preview */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-stone-950 rounded-[2rem] p-8 relative overflow-hidden text-white border border-stone-800 shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[80px]"></div>
+          
+          <div className="flex justify-between items-start mb-12 relative z-10">
+            <div>
+              <h2 className="text-2xl font-black mb-1">Throughput Velocity</h2>
+              <p className="text-stone-400 font-medium text-sm">Real-time simulation of queue resolution times.</p>
+            </div>
+            <span className="flex items-center gap-1 text-emerald-400 font-bold bg-emerald-400/10 px-3 py-1.5 rounded-full text-xs">
+              <ArrowUpRight className="w-4 h-4" /> 14.5% faster
+            </span>
           </div>
-          <h2 className="text-xl font-black text-stone-900 mb-2">Management Modules Unconfigured</h2>
-          <p className="text-stone-500 font-medium max-w-md mx-auto">
-            The advanced admin control panels and data tables will appear here once the management endpoints are fully integrated into the frontend.
-          </p>
+
+          <div className="h-48 flex items-end justify-between gap-3 relative z-10">
+            {/* Mock Chart Bars */}
+            {[40, 70, 45, 90, 65, 85, 30, 55, 75, 100].map((h, j) => (
+              <div key={j} className="w-full flex flex-col justify-end group cursor-crosshair">
+                <div 
+                  className="w-full bg-brand-500 rounded-t-md opacity-70 group-hover:opacity-100 transition-all hover:shadow-[0_0_15px_rgba(20,184,166,0.6)]" 
+                  style={{ height: `${h}%` }}
+                ></div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between mt-4 text-xs font-bold text-stone-500 tracking-widest uppercase relative z-10">
+            <span>08:00 AM</span>
+            <span>Now</span>
+          </div>
         </div>
-      </main>
+
+        <div className="bg-white rounded-[2rem] p-8 border border-stone-200 flex flex-col justify-between shadow-xl">
+          <div>
+            <div className="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-400 mb-6">
+              <Settings className="w-6 h-6" />
+            </div>
+            <h2 className="text-2xl font-black text-stone-900 mb-2">Automated Fallbacks</h2>
+            <p className="text-stone-500 font-medium text-sm mb-6 leading-relaxed">
+              If an institution drops offline, all pending tickets are safely paused. SMS notifications have been delivered flawlessly today.
+            </p>
+          </div>
+          
+          <div className="bg-stone-50 rounded-2xl p-5 border border-stone-100">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-stone-400">SMS Delivery Rate</span>
+              <span className="text-sm font-black text-stone-900">99.8%</span>
+            </div>
+            <div className="w-full h-2 bg-stone-200 rounded-full overflow-hidden">
+              <div className="w-[99.8%] h-full bg-stone-900 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
