@@ -18,6 +18,8 @@ export default function StaffDashboardPage() {
   const [isOnDuty, setIsOnDuty] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [isSkipModalOpen, setIsSkipModalOpen] = useState(false);
+  const [customerToSkip, setCustomerToSkip] = useState<string | null>(null);
 
   useEffect(() => {
     loadUser();
@@ -99,17 +101,24 @@ export default function StaffDashboardPage() {
     }
   };
 
-  const skipCustomer = async (entryId: string) => {
-    if (!confirm("Are you sure you want to mark this customer as a no-show?")) return;
+  const handleSkipClick = (entryId: string) => {
+    setCustomerToSkip(entryId);
+    setIsSkipModalOpen(true);
+  };
+
+  const confirmSkip = async () => {
+    if (!customerToSkip) return;
+    setIsSkipModalOpen(false);
     try {
-      setActionLoading(`skip-${entryId}`);
-      await api.post(`/staff/skip/${entryId}`);
+      setActionLoading(`skip-${customerToSkip}`);
+      await api.post(`/staff/skip/${customerToSkip}`);
       toast("Customer skipped", { icon: "⚠️" });
       fetchData();
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to skip");
     } finally {
       setActionLoading(null);
+      setCustomerToSkip(null);
     }
   };
 
@@ -227,7 +236,7 @@ export default function StaffDashboardPage() {
                       Complete Service
                     </button>
                     <button
-                      onClick={() => skipCustomer(currentlyServing.id)}
+                      onClick={() => handleSkipClick(currentlyServing.id)}
                       disabled={!!actionLoading}
                       className="w-full bg-white border-2 border-red-100 text-red-600 rounded-lg py-3 font-bold hover:bg-red-50 hover:border-red-200 transition-colors flex items-center justify-center gap-2"
                     >
@@ -355,6 +364,36 @@ export default function StaffDashboardPage() {
           </div>
         </div>
       </main>
+
+      {/* Skip Confirmation Modal */}
+      {isSkipModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsSkipModalOpen(false)}
+          />
+          <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-sm relative z-10 animate-fade-in">
+            <h3 className="text-xl font-bold text-stone-900 mb-2">Mark as No-Show?</h3>
+            <p className="text-stone-500 text-sm mb-6 leading-relaxed">
+              Are you sure you want to mark this customer as a no-show? This action will remove them from the active queue.
+            </p>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={confirmSkip}
+                className="w-full bg-red-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-700 transition-colors fast"
+              >
+                Yes, mark as No-Show
+              </button>
+              <button
+                onClick={() => setIsSkipModalOpen(false)}
+                className="w-full bg-transparent text-stone-600 font-semibold px-6 py-3 border-2 border-stone-200 rounded-lg hover:bg-stone-50 transition-colors fast"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

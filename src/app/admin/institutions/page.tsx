@@ -13,7 +13,7 @@ export default function AdminInstitutionsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [formData, setFormData] = useState({
-    name: "", type: "HOSPITAL", address: "", city: "", state: "", phone: "", description: ""
+    name: "", type: "HOSPITAL", address: "", city: "", state: "", phone: "", description: "", services: ""
   });
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function AdminInstitutionsPage() {
       toast.success("Institution deployed successfully");
       setIsModalOpen(false);
       fetchInstitutions();
-      setFormData({ name: "", type: "HOSPITAL", address: "", city: "", state: "", phone: "", description: "" });
+      setFormData({ name: "", type: "HOSPITAL", address: "", city: "", state: "", phone: "", description: "", services: "" });
     } catch (error) {
       toast.error("Deployment failed");
     } finally {
@@ -161,6 +161,10 @@ export default function AdminInstitutionsPage() {
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2 ml-1">Support Phone</label>
                     <input value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-stone-50 border border-stone-200 p-3.5 rounded-xl font-medium focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="+234..." />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2 ml-1">Available Services (Comma-separated)</label>
+                  <input value={formData.services} onChange={e => setFormData({...formData, services: e.target.value})} className="w-full bg-stone-50 border border-stone-200 p-3.5 rounded-xl font-medium focus:ring-2 focus:ring-brand-500 focus:outline-none mb-4" placeholder="e.g. General Inquiry, Checkup, Consultancy" />
                 </div>
                 
                 <div>
