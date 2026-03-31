@@ -125,6 +125,46 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* How It Works Section */}
+        <section id="how-it-works" className="py-20 bg-white relative">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-brand-600 font-semibold mb-4 uppercase tracking-widest text-xs">How It Works</span>
+              <h3 className="text-3xl md:text-4xl font-bold text-stone-900 mt-4 mb-4 tracking-tight">Three steps to bypass the line.</h3>
+              <p className="text-base text-stone-600 font-normal">Our system simplifies queueing. Focus on your day, not the line.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+              {/* Connecting Line (Desktop Only) */}
+              <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-stone-100 -z-10"></div>
+              
+              <div className="text-center relative">
+                <div className="w-24 h-24 mx-auto bg-stone-50 rounded-full border-[8px] border-white shadow-sm flex items-center justify-center mb-6 relative z-10">
+                  <span className="text-3xl font-extrabold text-brand-500">1</span>
+                </div>
+                <h4 className="text-xl font-bold text-stone-900 mb-3">Scan or Search</h4>
+                <p className="text-stone-500 text-sm leading-relaxed px-4">Find your desired institution on the app, or scan their QueueLess QR code upon arrival.</p>
+              </div>
+
+              <div className="text-center relative">
+                <div className="w-24 h-24 mx-auto bg-stone-50 rounded-full border-[8px] border-white shadow-sm flex items-center justify-center mb-6 relative z-10">
+                  <span className="text-3xl font-extrabold text-brand-500">2</span>
+                </div>
+                <h4 className="text-xl font-bold text-stone-900 mb-3">Get Your Ticket</h4>
+                <p className="text-stone-500 text-sm leading-relaxed px-4">Receive your digital ticket instantly. We'll show your exact position and estimated wait time.</p>
+              </div>
+
+              <div className="text-center relative">
+                <div className="w-24 h-24 mx-auto bg-stone-50 rounded-full border-[8px] border-white shadow-sm flex items-center justify-center mb-6 relative z-10">
+                  <span className="text-3xl font-extrabold text-brand-500">3</span>
+                </div>
+                <h4 className="text-xl font-bold text-stone-900 mb-3">Walk Right In</h4>
+                <p className="text-stone-500 text-sm leading-relaxed px-4">Go grab a coffee or run errands. We'll notify you when it's your turn so you walk straight to the counter.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Features - Brutalist precision */}
         <section className="py-20 bg-stone-50 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -167,19 +207,56 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-stone-50 border-t border-stone-200 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-extrabold text-stone-900 tracking-tight">Queue<span className="text-brand-500">Less</span></span>
+      {/* Standard Footer */}
+      <footer className="bg-stone-950 border-t border-stone-900 pt-16 pb-8 text-stone-400">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="md:col-span-1">
+              <Link href="/" className="text-2xl font-extrabold tracking-tight text-white mb-6 inline-block">
+                Queue<span className="text-brand-500">Less</span>
+              </Link>
+              <p className="text-sm text-stone-500 mb-6 leading-relaxed">
+                Reclaiming lost time for millions of Nigerians. Stop waiting in line and start living your life.
+              </p>
+              <a href="mailto:hello@queueless.com" className="text-sm font-semibold text-white hover:text-brand-500 transition-colors fast">
+                hello@queueless.com
+              </a>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-xs">Product</h4>
+              <ul className="space-y-4 text-sm font-medium">
+                <li><Link href="#how-it-works" className="hover:text-brand-500 transition-colors fast">How it Works</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">For Institutions</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Pricing</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Live Demo</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-xs">Resources</h4>
+              <ul className="space-y-4 text-sm font-medium">
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Help Center</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">API Documentation</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">System Status</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Case Studies</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-xs">Legal</h4>
+              <ul className="space-y-4 text-sm font-medium">
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Privacy Policy</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Terms of Service</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Cookie Policy</Link></li>
+                <li><Link href="/" className="hover:text-brand-500 transition-colors fast">Data Security</Link></li>
+              </ul>
+            </div>
           </div>
-          <div className="flex gap-8 text-sm font-medium text-stone-500">
-            <Link href="/contact" className="hover:text-brand-600 transition-colors fast">For Institutions</Link>
-            <Link href="/" className="hover:text-brand-600 transition-colors fast">Privacy</Link>
-            <Link href="/" className="hover:text-brand-600 transition-colors fast">Terms</Link>
-          </div>
-          <div className="text-xs font-medium text-stone-400">
-            © 2026 QueueLess.
+          
+          <div className="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-stone-500">
+            <p>© {new Date().getFullYear()} QueueLess Technologies. All rights reserved.</p>
+            <p>Designed in Lagos, built for the world.</p>
           </div>
         </div>
       </footer>
