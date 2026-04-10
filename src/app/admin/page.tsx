@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LayoutDashboard, Users, Building2, Activity, Settings, Plus, ArrowUpRight, Loader2, Sparkles } from "lucide-react";
+import { LayoutDashboard, Users, Building2, Activity, Settings, Plus, ArrowUpRight, Sparkles } from "lucide-react";
+import { Spinner } from "@/components/Spinner";
 import Link from "next/link";
 import api from "@/lib/api";
 
@@ -51,7 +52,7 @@ export default function AdminOverviewPage() {
       {/* Holographic Glowing Stats Grid */}
       {loading ? (
         <div className="flex justify-center py-32">
-          <Loader2 className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
+          <Spinner size={48} />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Loader2, ShieldAlert, Monitor, CheckCircle2 } from "lucide-react";
+import { Users, ShieldAlert, Monitor, CheckCircle2 } from "lucide-react";
+import { Spinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
@@ -45,7 +46,7 @@ export default function AdminUsersPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-10 h-10 animate-spin text-brand-500" />
+          <Spinner size={40} />
         </div>
       ) : (
         <div className="bg-white rounded-[2rem] border border-stone-200 shadow-xl overflow-hidden">

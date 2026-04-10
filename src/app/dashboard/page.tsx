@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOut, MapPin, Loader2, ArrowRight, Building2, Ticket } from "lucide-react";
+import { LogOut, MapPin, ArrowRight, Building2, Ticket } from "lucide-react";
+import { PageLoader, Spinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 import api from "@/lib/api";
@@ -71,11 +72,7 @@ export default function DashboardPage() {
   };
 
   if (authLoading || !isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
-      </div>
-    );
+    return <PageLoader message="Loading dashboard..." />;
   }
 
   return (
@@ -111,7 +108,7 @@ export default function DashboardPage() {
         
         {loadingData ? (
           <div className="flex justify-center items-center py-32">
-            <Loader2 className="w-10 h-10 animate-spin text-brand-500 drop-shadow-md" />
+            <Spinner size={40} />
           </div>
         ) : (
           <>

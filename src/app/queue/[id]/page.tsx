@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import QRCode from "react-qr-code";
-import { ArrowLeft, Loader2, AlertCircle, CheckCircle2, QrCode } from "lucide-react";
+import { ArrowLeft, AlertCircle, CheckCircle2, QrCode } from "lucide-react";
+import { PageLoader, Spinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 import { connectSocket, disconnectSocket } from "@/lib/socket";
@@ -108,11 +109,7 @@ export default function QueueTrackingPage({ params }: { params: { id: string } }
   };
 
   if (authLoading || loading) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
-      </div>
-    );
+    return <PageLoader message="Loading queue details..." />;
   }
 
   if (!entry) return null;
@@ -158,7 +155,7 @@ export default function QueueTrackingPage({ params }: { params: { id: string } }
 
         {entry.status === "SERVING" && (
           <div className="mb-6 bg-teal-50 border-2 border-teal-300 rounded-xl p-4 flex items-start gap-3 shadow-sm">
-            <Loader2 className="w-5 h-5 text-teal-600 shrink-0 mt-0.5 animate-spin" />
+            <Spinner size={20} />
             <p className="font-bold text-teal-900">You are currently being served.</p>
           </div>
         )}

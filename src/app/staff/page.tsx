@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Monitor, Users, Clock, Loader2, CheckCircle2, XCircle, BellRing, Settings2 } from "lucide-react";
+import { LogOut, Monitor, Users, Clock, CheckCircle2, XCircle, BellRing, Settings2 } from "lucide-react";
+import { PageLoader, ButtonSpinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 import { connectSocket, disconnectSocket } from "@/lib/socket";
@@ -123,11 +124,7 @@ export default function StaffDashboardPage() {
   };
 
   if (authLoading || loading) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
-      </div>
-    );
+    return <PageLoader message="Loading staff terminal..." />;
   }
 
   // Get currently serving (there should only be 1 per staff member, but let's find it)
@@ -232,7 +229,7 @@ export default function StaffDashboardPage() {
                       disabled={!!actionLoading}
                       className="w-full bg-stone-900 text-white rounded-lg py-3.5 font-bold hover:bg-stone-800 transition-colors flex items-center justify-center gap-2"
                     >
-                      {actionLoading === `complete-${currentlyServing.id}` ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+                      {actionLoading === `complete-${currentlyServing.id}` ? <ButtonSpinner size={20} /> : <CheckCircle2 className="w-5 h-5" />}
                       Complete Service
                     </button>
                     <button
@@ -240,7 +237,7 @@ export default function StaffDashboardPage() {
                       disabled={!!actionLoading}
                       className="w-full bg-white border-2 border-red-100 text-red-600 rounded-lg py-3 font-bold hover:bg-red-50 hover:border-red-200 transition-colors flex items-center justify-center gap-2"
                     >
-                      {actionLoading === `skip-${currentlyServing.id}` ? <Loader2 className="w-5 h-5 animate-spin" /> : <XCircle className="w-5 h-5" />}
+                      {actionLoading === `skip-${currentlyServing.id}` ? <ButtonSpinner size={20} /> : <XCircle className="w-5 h-5" />}
                       No-Show / Skip
                     </button>
                   </div>
@@ -303,7 +300,7 @@ export default function StaffDashboardPage() {
                         disabled={!isOnDuty || !isNextAvailable || !!actionLoading || !!currentlyServing}
                         className="bg-brand-500 text-white rounded-lg px-6 py-2.5 font-bold hover:bg-brand-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
                       >
-                        {actionLoading === `call-${queue.id}` ? <Loader2 className="w-5 h-5 animate-spin" /> : <BellRing className="w-5 h-5" />}
+                        {actionLoading === `call-${queue.id}` ? <ButtonSpinner size={20} /> : <BellRing className="w-5 h-5" />}
                         Call Next
                       </button>
                     </div>

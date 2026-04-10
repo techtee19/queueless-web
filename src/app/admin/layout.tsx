@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { LogOut, LayoutDashboard, Users, Building2, Activity, Settings, Loader2 } from "lucide-react";
+import { LogOut, LayoutDashboard, Users, Building2, Activity, Settings } from "lucide-react";
+import { PageLoader } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -26,11 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [authLoading, isAuthenticated, user, router]);
 
   if (authLoading || !isAuthenticated || (user?.role !== "ADMIN" && user?.role !== "SUPER_ADMIN")) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-500 drop-shadow-md" />
-      </div>
-    );
+    return <PageLoader message="Verifying access..." />;
   }
 
   const navLinks = [

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, Plus, MapPin, Loader2, Search, X } from "lucide-react";
+import { Building2, Plus, MapPin, Search, X } from "lucide-react";
+import { Spinner, ButtonSpinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
@@ -79,7 +80,7 @@ export default function AdminInstitutionsPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-10 h-10 animate-spin text-brand-500" />
+          <Spinner size={40} />
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -179,7 +180,7 @@ export default function AdminInstitutionsPage() {
                   <button type="submit" disabled={isSubmitting} className="group relative bg-brand-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-brand-500/30 hover:bg-brand-600 active:scale-95 transition-all overflow-hidden">
                     <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
                     <span className="relative flex items-center gap-2">
-                      {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />} Launch Node
+                      {isSubmitting && <ButtonSpinner size={16} />} Launch Node
                     </span>
                   </button>
                 </div>

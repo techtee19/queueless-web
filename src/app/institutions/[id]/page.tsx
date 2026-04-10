@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clock, MapPin, Phone, Loader2, Users } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Phone, Users } from "lucide-react";
+import { PageLoader, ButtonSpinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 import { Institution } from "@/types";
@@ -52,11 +53,7 @@ export default function InstitutionDetailPage({ params }: { params: { id: string
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-stone-50 flex justify-center items-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
-      </div>
-    );
+    return <PageLoader message="Loading institution..." />;
   }
 
   if (!institution) return null;
@@ -161,7 +158,7 @@ export default function InstitutionDetailPage({ params }: { params: { id: string
                         className="w-full md:w-auto inline-flex items-center justify-center bg-brand-500 text-white rounded-lg px-6 py-2.5 font-semibold hover:bg-brand-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
                       >
                         {joiningId === service.id ? (
-                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <ButtonSpinner size={20} />
                         ) : !service.isOpen ? (
                           "Queue Closed"
                         ) : isFull ? (

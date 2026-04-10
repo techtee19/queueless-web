@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { ButtonSpinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -149,7 +150,7 @@ export default function LoginPage() {
                 <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></div>
                 <span className="relative flex items-center gap-2">
                   {isSubmitting ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <ButtonSpinner size={20} />
                   ) : (
                     <>
                       Sign In
