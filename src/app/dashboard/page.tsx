@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { LogOut, MapPin, ArrowRight, Building2, Ticket } from "lucide-react";
 import { PageLoader, Spinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
@@ -80,8 +81,8 @@ export default function DashboardPage() {
       {/* Premium Glass Header */}
       <header className="sticky top-0 z-40 glass-panel border-b border-stone-200/50 shadow-sm transition-all animate-fade-in-up">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/dashboard" className="text-xl font-black tracking-tight text-stone-900 group">
-            Queue<span className="text-brand-500">Less</span>
+          <Link href="/dashboard" className="group flex items-center">
+            <Image src="/queueless-logo-tight.png" alt="QueueLess" width={164} height={32} className="h-8 w-auto object-contain" priority />
           </Link>
           
           <div className="flex items-center gap-5">

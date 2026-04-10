@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { ButtonSpinner } from "@/components/Spinner";
@@ -65,8 +66,8 @@ export default function RegisterPage() {
         <div className="absolute bottom-10 left-[-10%] w-[500px] h-[500px] bg-sky-500 rounded-full blur-[130px] opacity-20"></div>
         
         <div className="relative z-10 max-w-lg px-12 text-center text-balance animate-fade-in-up">
-          <Link href="/" className="inline-block text-4xl font-extrabold tracking-tight text-white mb-8 hover:scale-105 transition-transform">
-            Queue<span className="text-brand-400">Less</span>
+          <Link href="/" className="mb-8 inline-block bg-white/10 p-3 rounded-2xl backdrop-blur-sm hover:scale-105 transition-transform">
+            <Image src="/queueless-logo-tight.png" alt="QueueLess" width={246} height={48} className="h-12 w-auto object-contain brightness-0 invert" priority />
           </Link>
           <div className="glass-panel-dark rounded-3xl p-8 mb-8 text-left relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1 h-full bg-brand-500 transition-all duration-300 group-hover:w-2"></div>
@@ -89,9 +90,9 @@ export default function RegisterPage() {
       {/* Right Pane - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 xl:p-24 animate-fade-in">
         <div className="w-full max-w-[420px]">
-          <div className="lg:hidden mb-12 text-center">
-            <Link href="/" className="text-3xl font-extrabold tracking-tight text-stone-900 inline-block">
-              Queue<span className="text-brand-500">Less</span>
+          <div className="lg:hidden mb-12 flex justify-center">
+            <Link href="/" className="inline-block">
+              <Image src="/queueless-logo-tight.png" alt="QueueLess" width={205} height={40} className="h-10 w-auto object-contain" />
             </Link>
           </div>
 

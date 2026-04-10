@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { LogOut, LayoutDashboard, Users, Building2, Activity, Settings } from "lucide-react";
 import { PageLoader } from "@/components/Spinner";
 import toast from "react-hot-toast";
@@ -43,9 +44,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Persistent Admin Sidebar */}
       <aside className="w-64 fixed inset-y-0 left-0 bg-stone-950 text-stone-400 flex flex-col z-50 shadow-2xl">
         <div className="h-20 flex items-center px-6 border-b border-white/5 bg-stone-950">
-          <Link href="/admin" className="text-xl font-black tracking-tight text-white group">
-            Queue<span className="text-brand-500">Less</span> 
-            <span className="text-[10px] text-stone-500 font-bold ml-1.5 uppercase tracking-[0.2em]">Admin</span>
+          <Link href="/admin" className="group flex items-center gap-3">
+            <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
+              <Image src="/queueless-logo-tight.png" alt="QueueLess Admin" width={143} height={28} className="h-7 w-auto object-contain brightness-0 invert" priority />
+            </div>
+            <span className="text-[11px] text-stone-500 font-bold uppercase tracking-[0.2em]">Admin</span>
           </Link>
         </div>
         

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, Zap, QrCode, Bell, ArrowRight, Activity, ShieldCheck, MapPin } from "lucide-react";
 
 export default function LandingPage() {
@@ -7,8 +8,8 @@ export default function LandingPage() {
       {/* Header */}
       <header className="fixed top-0 inset-x-0 z-50 glass-panel border-b-0 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-extrabold tracking-tight text-stone-900 group">
-            Queue<span className="text-brand-500 group-hover:text-brand-600 transition-colors fast">Less</span>
+          <Link href="/" className="group flex items-center">
+            <Image src="/queueless-logo-tight.png" alt="QueueLess" width={164} height={32} className="h-8 w-auto object-contain" priority />
           </Link>
           <nav className="flex items-center gap-8">
             <Link href="#how-it-works" className="hidden md:block text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors fast">
@@ -212,8 +213,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div className="md:col-span-1">
-              <Link href="/" className="text-2xl font-extrabold tracking-tight text-white mb-6 inline-block">
-                Queue<span className="text-brand-500">Less</span>
+              <Link href="/" className="mb-6 inline-block bg-white/10 p-2.5 rounded-xl backdrop-blur-sm">
+                <Image src="/queueless-logo-tight.png" alt="QueueLess" width={205} height={40} className="h-10 w-auto object-contain brightness-0 invert" />
               </Link>
               <p className="text-sm text-stone-500 mb-6 leading-relaxed">
                 Reclaiming lost time for millions of Nigerians. Stop waiting in line and start living your life.

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Building2, MapPin, Mail, Phone } from "lucide-react";
 
 export default function ContactPage() {
@@ -10,7 +11,9 @@ export default function ContactPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
-          <span className="font-extrabold text-stone-900 tracking-tight">Queue<span className="text-brand-500">Less</span></span>
+          <Link href="/" className="group flex items-center">
+            <Image src="/queueless-logo-tight.png" alt="QueueLess" width={164} height={32} className="h-8 w-auto object-contain" priority />
+          </Link>
         </div>
       </header>
 
