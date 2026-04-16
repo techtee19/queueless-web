@@ -6,7 +6,11 @@ export interface User {
   role: "CUSTOMER" | "STAFF" | "ADMIN" | "SUPER_ADMIN";
   avatarUrl?: string;
   isVerified: boolean;
-  staffProfile?: { counterNumber?: number; isOnDuty?: boolean };
+  staffProfile?: {
+    counterNumber?: number;
+    isOnDuty?: boolean;
+    institution?: { id: string; name: string; type: string; city: string };
+  };
 }
 
 export interface Institution {

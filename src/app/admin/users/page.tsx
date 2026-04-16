@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, ShieldAlert, Monitor, CheckCircle2 } from "lucide-react";
+import { Users, ShieldAlert, Monitor, CheckCircle2, CircleMinus } from "lucide-react";
 import { Spinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
@@ -90,9 +90,21 @@ export default function AdminUsersPage() {
                       )}
                     </td>
                     <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                        <CheckCircle2 className="w-4 h-4" /> Active
-                      </span>
+                      {u.role === "STAFF" ? (
+                        u.staffProfile?.isOnDuty ? (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                            <CheckCircle2 className="w-4 h-4" /> On Duty
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-400">
+                            <CircleMinus className="w-4 h-4" /> Inactive
+                          </span>
+                        )
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                          <CheckCircle2 className="w-4 h-4" /> Active
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}

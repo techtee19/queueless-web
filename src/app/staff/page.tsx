@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Monitor, Users, Clock, CheckCircle2, XCircle, BellRing, Settings2 } from "lucide-react";
+import { LogOut, Monitor, Users, Clock, CheckCircle2, XCircle, BellRing, Settings2, Building2 } from "lucide-react";
 import { PageLoader, ButtonSpinner } from "@/components/Spinner";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
@@ -139,12 +139,20 @@ export default function StaffDashboardPage() {
       {/* Header */}
       <header className="bg-stone-900 text-white border-b border-stone-800 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Monitor className="w-5 h-5 text-brand-400" />
-            <h1 className="text-lg font-bold tracking-tight">Staff Terminal</h1>
-            <span className="bg-stone-800 text-stone-300 text-xs px-2 py-1 rounded font-mono">
+          <div className="flex items-center gap-3 min-w-0">
+            <Monitor className="w-5 h-5 text-brand-400 shrink-0" />
+            <h1 className="text-lg font-bold tracking-tight hidden sm:block">Staff Terminal</h1>
+            <span className="bg-stone-800 text-stone-300 text-xs px-2 py-1 rounded font-mono shrink-0">
               Counter {user?.staffProfile?.counterNumber || "1"}
             </span>
+            {user?.staffProfile?.institution && (
+              <div className="hidden md:flex items-center gap-1.5 bg-stone-800 border border-stone-700 text-stone-200 text-xs px-3 py-1.5 rounded-full">
+                <Building2 className="w-3.5 h-3.5 text-brand-400" />
+                <span className="font-semibold truncate max-w-[180px]">{user.staffProfile.institution.name}</span>
+                <span className="text-stone-500">·</span>
+                <span className="text-stone-400 capitalize">{user.staffProfile.institution.city}</span>
+              </div>
+            )}
           </div>
           
           <div className="flex items-center gap-6">
@@ -252,6 +260,26 @@ export default function StaffDashboardPage() {
                 </div>
               )}
             </div>
+
+            {/* Organisation Info */}
+            {user?.staffProfile?.institution && (
+              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
+                <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-brand-500" />
+                  Organisation
+                </h2>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center shrink-0">
+                    <Building2 className="w-6 h-6 text-brand-500" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-stone-900 leading-tight truncate">{user.staffProfile.institution.name}</p>
+                    <p className="text-xs text-stone-500 mt-1 capitalize">{user.staffProfile.institution.type.toLowerCase().replace('_', ' ')}</p>
+                    <p className="text-xs text-stone-400 mt-1">{user.staffProfile.institution.city}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Stats */}
             <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
