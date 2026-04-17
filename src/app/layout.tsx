@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             style: { background: "#1c1917", color: "#fff", borderRadius: "12px" },
           }}
         />
+        <Analytics />
       </body>
     </html>
   );
