@@ -169,6 +169,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   required
                   placeholder="Min. 6 characters"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full border border-stone-200 py-3.5 pl-4 pr-12 text-stone-900 outline-none placeholder:text-stone-400 sm:text-sm font-medium focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
@@ -193,6 +194,7 @@ export default function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 required
                 placeholder="Confirm password"
+                autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="block w-full border border-stone-200 py-3.5 px-4 text-stone-900 outline-none placeholder:text-stone-400 sm:text-sm font-medium rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all shadow-sm"
